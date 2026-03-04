@@ -23,20 +23,20 @@ Before you begin, ensure you have the following installed on your machine:
 ## Installation & Setup 🚀
 
 **1. Clone the repository**
-\`\`\`bash
+bash
 git clone https://github.com/mohammadmaazqureshi3-oss/x3dh-Messenge.git
 cd x3dh-Messenge
-\`\`\`
+
 
 **2. Install dependencies**
-\`\`\`bash
+bash
 npm install
-\`\`\`
+
 
 **3. Database Setup**
 Log into your MySQL instance and run the following SQL commands to create the database and required tables:
 
-\`\`\`sql
+sql
 CREATE DATABASE x3dh_messenger;
 USE x3dh_messenger;
 
@@ -58,18 +58,18 @@ CREATE TABLE messages (
   FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (recipient_id) REFERENCES users(id) ON DELETE CASCADE
 );
-\`\`\`
+
 
 **4. Environment Variables**
 Create a `.env` file in the root directory of your project and add the following variables. Update the database credentials to match your local MySQL setup:
 
-\`\`\`env
+env
 DB_HOST=127.0.0.1
 DB_USER=root
 DB_PASSWORD=your_mysql_password
 DB_NAME=x3dh_messenger
 JWT_SECRET=supersecret_keys_2025
-\`\`\`
+
 
 **5. Start the Server**
 \`\`\`bash
