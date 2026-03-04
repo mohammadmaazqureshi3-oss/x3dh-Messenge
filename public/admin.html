@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+</head>
+<body>
+<h2>Admin Panel</h2>
+<div id="list"></div>
+
+<script>
+async function load() {
+  const res = await fetch('/api/users', {
+    headers: { Authorization: 'Bearer ' + localStorage.token }
+  });
+  const users = await res.json();
+  list.innerHTML = users.map(u =>
+    `<div>${u.username}
+      <button onclick="del(${u.id})">Delete</button>
+     </div>`
+  ).join('');
+}
+
+async function del(id) {
+  await fetch('/api/admin/user/' + id, {
+    method: 'DELETE',
+    headers: { Authorization: 'Bearer ' + localStorage.token }
+  });
+  load();
+}
+load();
+</script>
+</body>
+</html>

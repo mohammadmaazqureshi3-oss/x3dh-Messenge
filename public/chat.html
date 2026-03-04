@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat - X3DH</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container wide">
+        <div class="sidebar">
+            <h3>Contacts</h3>
+            <div id="contacts-list"></div>
+            <button onclick="localStorage.clear(); location.href='/login.html'" class="logout-btn">Logout</button>
+        </div>
+
+        <div class="main-chat">
+            <h2 id="chat-title">Select a contact</h2>
+            <div id="chat-box" class="messages-container"></div>
+            
+            <div class="input-area">
+                <input type="text" id="msg-input" placeholder="Secure message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/crypto.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - X3DH Messenger</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Secure Account</h1>
+        <input type="text" id="reg-username" placeholder="Username">
+        <input type="password" id="reg-password" placeholder="Password">
+        <button id="reg-btn" onclick="handleRegister()">Register & Generate Keys</button>
+        <p id="reg-status" style="margin-top:15px;"></p>
+        <p>Already have an account? <a href="/login.html">Login</a></p>
+    </div>
+
+    <script src="/js/crypto.js"></script>
+    <script>
+        let x3dh;
+        async function handleRegister() {
+            try {
+                if (!x3dh) x3dh = new X3DHCrypto(); 
+                const user = document.getElementById('reg-username').value;
+                const pass = document.getElementById('reg-password').value;
+                const status = document.getElementById('reg-status');
+                const btn = document.getElementById('reg-btn');
+
+                if (!user || !pass) return alert("Fill all fields");
+
+                btn.disabled = true;
+                status.innerText = "Generating Security Keys...";
+                
+                const bundle = await x3dh.generateKeyBundle();
+                
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: user,
+                        password: pass,
+                        identityKey: bundle.identityKey,
+                        signedPrekey: bundle.signedPrekey,
+                        signature: "SIG_v1"
+                    })
+                });
+
+                if (response.ok) {
+                    status.style.color = "green";
+                    status.innerText = "Account Created! Redirecting...";
+                    setTimeout(() => window.location.href = '/login.html', 1500);
+                } else {
+                    const err = await response.json();
+                    throw new Error(err.error || "Registration failed");
+                }
+            } catch (err) {
+                document.getElementById('reg-btn').disabled = false;
+                document.getElementById('reg-status').innerText = err.message;
+            }
+        }
+    </script>
+</body>
+</html>
